@@ -1,0 +1,16 @@
+{
+  "name": "ui-carrera-robots",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "client": "cd frontend && npm run dev"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "serialport": "^13.0.0",
+    "socket.io": "^4.8.1",
+    "ws": "^8.18.2"
+  }
+}
