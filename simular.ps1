@@ -19,7 +19,7 @@ while ($true) {
     $seconds = [int](($elapsedMs / 1000) % 60)
     $milliseconds = [int]($elapsedMs % 1000)
 
-    $timeStr = "{0:D2}:{1:D2}:{2:D3}" -f $minutes, $seconds, $milliseconds
+    $timeStr = "{0:D2}:{1:D2}.{2:D2}" -f $minutes, $seconds, $milliseconds
 
     $lapQuarter = [int]($elapsedMs / 15000)
     if ($lapQuarter -gt $lastLapQuarter) {

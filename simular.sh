@@ -19,7 +19,7 @@ while true; do
     SECONDS=$(( (ELAPSED_MS / 1000) % 60 ))
     MILLISECONDS=$((ELAPSED_MS % 1000))
 
-    TIME_STR=$(printf "%02d:%02d:%02d" $MINUTES $SECONDS $MILLISECONDS)
+    TIME_STR=$(printf "%02d:%02d.%02d" $MINUTES $SECONDS $MILLISECONDS)
 
     LAP_QUARTER=$((ELAPSED_MS / 15000)) # 15,000 ms = 15 seconds
 
