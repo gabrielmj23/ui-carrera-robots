@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import "./App.css";
 
-const App: React.FC = () => {
+export default function App() {
   const [tiempos, setTiempos] = useState<string[]>([]);
 
   useEffect(() => {
@@ -25,6 +25,4 @@ const App: React.FC = () => {
       </ul>
     </div>
   );
-};
-
-export default App;
+}

@@ -16,12 +16,13 @@ const io = new Server(server, {
 });
 
 // Configura aquí el puerto serial (ajusta el path según tu sistema)
-const portPath = "/dev/ttyUSB0"; // Cambia esto por el puerto correcto
+const portPath = "/dev/pts/3"; // Cambia esto por el puerto correcto
 const serialPort = new SerialPort({ path: portPath, baudRate: 12500 });
 const parser = serialPort.pipe(new ReadlineParser({ delimiter: "\n" }));
 
 parser.on("data", (data: string) => {
   // Envía los datos recibidos a todos los clientes conectados
+  console.log("Datos recibidos:", data.trim());
   io.emit("tiempo", data.trim());
 });
 
