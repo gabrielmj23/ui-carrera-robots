@@ -15,9 +15,8 @@ const io = new Server(server, {
   },
 });
 
-// Configura aquí el puerto serial (ajusta el path según tu sistema)
-const portPath = "/dev/pts/3"; // Cambia esto por el puerto correcto
-const serialPort = new SerialPort({ path: portPath, baudRate: 12500 });
+const portPath = "/dev/pts/3";
+const serialPort = new SerialPort({ path: portPath, baudRate: 115200 });
 const parser = serialPort.pipe(new ReadlineParser({ delimiter: "\n" }));
 
 parser.on("data", (data: string) => {
