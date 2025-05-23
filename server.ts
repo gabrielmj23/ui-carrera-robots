@@ -15,8 +15,13 @@ const io = new Server(server, {
   },
 });
 
-const portPath = "/dev/pts/3";
-const serialPort = new SerialPort({ path: portPath, baudRate: 115200 });
+// Obtener el portPath desde los argumentos de la CLI o variable de entorno
+const portPath = process.argv[2] || process.env.SERIAL_PORT || "/dev/pts/3";
+const baudRate = 115200;
+
+console.log(`Usando puerto serial: ${portPath} a ${baudRate} bps`);
+
+const serialPort = new SerialPort({ path: portPath, baudRate });
 const parser = serialPort.pipe(new ReadlineParser({ delimiter: "\n" }));
 
 parser.on("data", (data: string) => {
