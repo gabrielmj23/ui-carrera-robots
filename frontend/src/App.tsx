@@ -2,10 +2,19 @@ import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Card } from "./components/ui/card";
 import { BotIcon, Clock, Flag } from "lucide-react";
+import { SCHOOLS, type SchoolT } from "./constants";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./components/ui/select";
 
 export default function App() {
   const [tiempos, setTiempos] = useState<string[]>([]);
   const [tiempoCrono, setTiempoCrono] = useState<string>("00:00.00");
+  const [colegio, setColegio] = useState<SchoolT | null>(null);
 
   useEffect(() => {
     const socket = io("http://localhost:3001");
@@ -35,14 +44,40 @@ export default function App() {
         </div>
         <div className="grid md:grid-cols-2 gap-6 pt-5">
           <div className="flex flex-col items-center justify-center order-2 md:order-1">
-            <img
-              src="los-proceres.png"
-              alt="Colegio Los Próceres Logo"
-              className="w-40 h-40 object-contain"
-            />
-            <h2 className="text-xl font-bold mt-2 text-gray-800">
-              U.E. Colegio Los Próceres
-            </h2>
+            {!!colegio ? (
+              <>
+                <img
+                  src={colegio.logo}
+                  alt="Colegio Los Próceres Logo"
+                  className="w-40 h-40 object-contain"
+                />
+                <h2 className="text-xl font-bold mt-2 text-gray-800">
+                  {colegio.name}
+                </h2>
+              </>
+            ) : (
+              <>
+                <Select
+                  onValueChange={(value) => {
+                    const selectedSchool = Object.values(SCHOOLS).find(
+                      (school) => school.id === value
+                    );
+                    setColegio(selectedSchool || null);
+                  }}
+                >
+                  <SelectTrigger className="w-[180px]">
+                    <SelectValue placeholder="Seleccionar colegio" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.values(SCHOOLS).map((school) => (
+                      <SelectItem key={school.id} value={school.id}>
+                        {school.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </>
+            )}
           </div>
 
           <div className="space-y-6 order-1 md:order-2">
