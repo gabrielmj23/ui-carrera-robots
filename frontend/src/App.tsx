@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
 import { Card } from "./components/ui/card";
-import { BotIcon, Clock, Flag } from "lucide-react";
+import { BotIcon, Clock, Flag, Pencil } from "lucide-react";
 import { SCHOOLS, type SchoolT } from "./constants";
 import {
   Select,
@@ -10,11 +10,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "./components/ui/select";
+import { Button } from "./components/ui/button";
 
 export default function App() {
   const [tiempos, setTiempos] = useState<string[]>([]);
   const [tiempoCrono, setTiempoCrono] = useState<string>("00:00.00");
   const [colegio, setColegio] = useState<SchoolT | null>(null);
+  const [robot, setRobot] = useState<string | null>(null);
 
   useEffect(() => {
     const socket = io("http://localhost:3001");
@@ -34,6 +36,11 @@ export default function App() {
 
   return (
     <div className="min-h-screen min-w-screen bg-gradient-to-b from-purple-100 to-blue-100 p-6 flex items-center justify-center">
+      <img
+        src="/logo-competencia.png"
+        alt="Logo de la competencia"
+        className="h-30 absolute top-0.5 left-1"
+      ></img>
       <Card className="px-12 border-0 shadow-xl bg-white">
         <div className="flex items-center justify-center gap-4">
           <BotIcon size={40} className="text-gray-800" />
@@ -48,12 +55,48 @@ export default function App() {
               <>
                 <img
                   src={colegio.logo}
-                  alt="Colegio Los Próceres Logo"
+                  alt={`Logo de ${colegio.name}`}
                   className="w-40 h-40 object-contain"
                 />
                 <h2 className="text-xl font-bold mt-2 text-gray-800">
                   {colegio.name}
                 </h2>
+                {robot === null ? (
+                  <Select onValueChange={(value) => setRobot(value)}>
+                    <SelectTrigger className="w-[180px] mt-2">
+                      <SelectValue placeholder="Seleccionar robot" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {colegio.robots.map((robot) => (
+                        <SelectItem key={robot} value={robot}>
+                          {robot}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                ) : (
+                  <Card className="py-2 px-3 mt-2 bg-amber-100 border border-amber-200">
+                    <div className="font-bold text-lg text-gray-800 flex items-center gap-1">
+                      <BotIcon
+                        size={20}
+                        className="text-gray-800 inline mb-1"
+                      />
+                      {robot}
+                    </div>
+                  </Card>
+                )}
+                <Button
+                  variant="link"
+                  className="text-amber-800 mt-1"
+                  onClick={() => {
+                    setRobot(null);
+                    setColegio(null);
+                  }}
+                >
+                  <span>
+                    <Pencil size={18} className="inline" /> Cambiar
+                  </span>
+                </Button>
               </>
             ) : (
               <>
