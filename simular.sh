@@ -21,10 +21,18 @@ while true; do
 
     TIME_STR=$(printf "%02d:%02d.%02d" $MINUTES $SECONDS $MILLISECONDS)
 
-    LAP_QUARTER=$((ELAPSED_MS / 15000)) # 15,000 ms = 15 seconds
+    LAP_QUARTER=$((ELAPSED_MS / 10000)) # 10,000 ms = 10 seconds
 
     if (( LAP_QUARTER > LAST_LAP_QUARTER )); then
-        echo -ne "vuelta " > "$SERIAL_PORT"
+        LAP_COUNT=$((LAP_QUARTER))
+        LAP_TIME_MS=$((ELAPSED_MS - LAST_LAP_QUARTER * 10000))
+        LAP_MINUTES=$((LAP_TIME_MS / 60000))
+        LAP_SECONDS=$(( (LAP_TIME_MS / 1000) % 60 ))
+        LAP_MILLISECONDS=$((LAP_TIME_MS % 1000))
+        LAP_TIME_STR=$(printf "%02d:%02d.%02d" $LAP_MINUTES $LAP_SECONDS $LAP_MILLISECONDS)
+        echo -ne "Lap Count: $LAP_COUNT\n" > "$SERIAL_PORT"
+        echo -ne "Lap Time: $LAP_TIME_STR\n" > "$SERIAL_PORT"
+        echo -ne "Race Time: $TIME_STR\n" > "$SERIAL_PORT"
         LAST_LAP_QUARTER=$LAP_QUARTER
     fi
 

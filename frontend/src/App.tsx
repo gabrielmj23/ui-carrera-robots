@@ -12,8 +12,17 @@ import {
 } from "./components/ui/select";
 import { Button } from "./components/ui/button";
 
+type VueltaT = {
+  lapCount: number;
+  lapTime: string;
+  raceTime: string;
+};
+
+let lapCount = 0;
+let lapTime = "00:00.00";
+
 export default function App() {
-  const [tiempos, setTiempos] = useState<string[]>([]);
+  const [tiempos, setTiempos] = useState<VueltaT[]>([]);
   const [tiempoCrono, setTiempoCrono] = useState<string>("00:00.00");
   const [colegio, setColegio] = useState<SchoolT | null>(null);
   const [robot, setRobot] = useState<string | null>(null);
@@ -21,10 +30,21 @@ export default function App() {
   useEffect(() => {
     const socket = io("http://localhost:3001");
     socket.on("tiempo", (data: string) => {
-      console.log("Datos recibidos:", data);
-      if (data.startsWith("vuelta")) {
-        const tiempo = data.split(" ")[1];
-        setTiempos((prev) => [...prev, tiempo]);
+      // console.log("Datos recibidos:", data);
+      if (data.startsWith("Lap Count:")) {
+        lapCount = Number(data.split(":")[1].trim());
+      } else if (data.startsWith("Lap Time:")) {
+        lapTime = data.split(":").slice(1).join(":").trim();
+      } else if (data.startsWith("Race Time:")) {
+        const raceTime = data.split(":").slice(1).join(":").trim();
+        setTiempos((prev) => [
+          ...prev,
+          {
+            lapCount,
+            lapTime,
+            raceTime,
+          },
+        ]);
       } else {
         setTiempoCrono(data);
       }
@@ -135,15 +155,18 @@ export default function App() {
             </div>
 
             <ul className="space-y-3">
-              {tiempos.map((tiempo, index) => (
+              {tiempos.map((tiempo) => (
                 <div className="flex items-center gap-3 bg-green-50 p-4 rounded-lg border border-green-100 shadow-sm">
                   <Flag className="h-5 w-5 text-green-500" />
                   <div>
                     <div className="text-sm text-green-700 font-medium">
-                      Vuelta {index + 1}
+                      Vuelta {tiempo.lapCount}
                     </div>
                     <div className="text-xl font-bold text-green-800">
-                      {tiempo}
+                      Tiempo de Vuelta: {tiempo.lapTime}
+                    </div>
+                    <div className="text-xl font-bold text-green-800">
+                      Tiempo de Carrera: {tiempo.raceTime}
                     </div>
                   </div>
                 </div>
