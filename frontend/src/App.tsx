@@ -56,7 +56,7 @@ export default function App() {
                 <img
                   src={colegio.logo}
                   alt={`Logo de ${colegio.name}`}
-                  className="w-40 h-40 object-contain"
+                  className="h-40 object-contain"
                 />
                 <h2 className="text-xl font-bold mt-2 text-gray-800">
                   {colegio.name}

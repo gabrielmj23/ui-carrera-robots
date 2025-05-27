@@ -14,7 +14,7 @@ export const SCHOOLS: Record<string, SchoolT> = {
   },
   "jesus-obrero": {
     id: "jesus-obrero",
-    name: "U.E. Colegio Jesús Obrero",
+    name: "E.T. Jesús Obrero",
     logo: "jesus-obrero.png",
     robots: ["McQueen"],
   },
@@ -32,8 +32,8 @@ export const SCHOOLS: Record<string, SchoolT> = {
   },
   "miguel-otero": {
     id: "miguel-otero",
-    name: "U.E. Colegio Miguel Otero Silva",
-    logo: "miguel-otero.png",
+    name: "Colegio Miguel Otero Silva",
+    logo: "cimos.png",
     robots: ["MOS Thunderbolt"],
   },
   "monte-sacro": {
