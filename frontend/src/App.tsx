@@ -26,6 +26,7 @@ export default function App() {
   const [tiempoCrono, setTiempoCrono] = useState<string>("00:00.00");
   const [colegio, setColegio] = useState<SchoolT | null>(null);
   const [robot, setRobot] = useState<string | null>(null);
+  const isFinal = window.location.pathname.includes("final");
 
   useEffect(() => {
     const socket = io("http://localhost:3001");
@@ -65,7 +66,7 @@ export default function App() {
         <div className="flex items-center justify-center gap-4">
           <BotIcon size={40} className="text-gray-800" />
           <h1 className="font-bold text-gray-800">
-            Competencia Intercolegial de Robótica
+            Competencia de Velocistas - {isFinal ? "Final" : "Clasificación"}
           </h1>
           <BotIcon size={40} className="text-gray-800" />
         </div>
